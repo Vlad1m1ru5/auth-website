@@ -1,0 +1,24 @@
+version: '2'
+
+services:
+  nginx-ldap:
+    image: bitnami/nginx-ldap-auth-daemon
+    ports:
+      - 8888:8888
+  nginx:
+    image: bitnami/nginx
+    ports:
+     - 8080:8080
+    volumes:
+     - ./app:/app
+     - ./conf/ldap_nginx.conf:/opt/bitnami/nginx/conf/server_blocks/ldap_nginx.conf
+  openldap:
+    image: bitnami/openldap
+    ports:
+      - '1389:1389'
+      - '1636:1636'
+    environment:
+      - LDAP_ADMIN_USERNAME=admin
+      - LDAP_ADMIN_PASSWORD=adminpassword
+      - LDAP_USERS=customuser
+      - LDAP_PASSWORDS=custompassword
